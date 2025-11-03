@@ -2,6 +2,9 @@ import env from "#config/env/env.js";
 import { Knex } from "knex";
 import { z } from "zod";
 
+
+
+
 const connectionSchema = z.object({
     host: z.string(),
     port: z.number(),
