@@ -1,8 +1,8 @@
-type WbTariffResponse = {
+// import { WbTariffResponse } from "./dto/wbBoxTariffs.valid.js";
+import { dtoSchema } from "./dto/wbBoxTariffs.valid.js";
+import { DTO } from "./types.js";
 
-}
-
-async function getWBTariffs() {
+async function getWbTariffs(): Promise<DTO> {
     const actualDateFormated = new Date().toISOString().slice(0, 10);
 
     const url = `https://common-api.wildberries.ru/api/v1/tariffs/box?date=${actualDateFormated}`;
@@ -13,17 +13,19 @@ async function getWBTariffs() {
         const response = await fetch(url, {
             headers: {
                 "Authorization": `Bearer ${TOKEN}`,
-                "Content-Type": "application/json",
+                // "Content-Type": "application/json",
             },
         });
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
 
-        const result = await response.json();
-        console.log(result);
+        const json = await response.json();
+        const data = dtoSchema.parse(json);
+        // console.log(data);
+        return data;
     } catch (error) {
         console.error(error.message);
     }
 }
-export default getWBTariffs;
+export default getWbTariffs;
