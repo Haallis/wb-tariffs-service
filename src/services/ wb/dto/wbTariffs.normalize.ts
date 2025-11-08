@@ -1,26 +1,29 @@
 import { z } from "zod";
 import { DTO, NormDTO } from "../types.js";
 
-function replaceWithNull(val: string): null | undefined {
-    if (val === "" || val === "-") return null;
-}
-
 export const normalizedDTOSchema = z.array(
     z.object({
         date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-        geo_name: z.string(),
+        geo_name: z.string().nullable(),
         warehouse_name: z.string(),
-        box_delivery_base: z.number(),
-        box_delivery_coef_expr: z.number(),
-        box_delivery_liter: z.number(),
-        box_delivery_marketplace_base: z.number(),
-        box_delivery_marketplace_coef_expr: z.number(),
-        box_delivery_marketplace_liter: z.number(),
-        box_storage_base: z.number(),
-        box_storage_coef_expr: z.number(),
-        box_storage_liter: z.number(),
+        box_delivery_base: z.number().nullable(),
+        box_delivery_coef_expr: z.number().nullable(),
+        box_delivery_liter: z.number().nullable(),
+        box_delivery_marketplace_base: z.number().nullable(),
+        box_delivery_marketplace_coef_expr: z.number().nullable(),
+        box_delivery_marketplace_liter: z.number().nullable(),
+        box_storage_base: z.number().nullable(),
+        box_storage_coef_expr: z.number().nullable(),
+        box_storage_liter: z.number().nullable(),
     }),
 );
+
+function parseWarehouseCoefs(coef) {
+    if (coef === "" || coef === "-") {
+        return null;
+    }
+    return Number(coef.replace(",", "."));
+}
 
 export function normalizeDTO(dto: DTO): NormDTO {
     const date = dto.response.data.dtTillMax;
@@ -28,17 +31,18 @@ export function normalizeDTO(dto: DTO): NormDTO {
         dto.response.data.warehouseList.map((w) => {
             return {
                 date: date,
-                geo_name: w.geoName,
+                geo_name: w.geoName === "" ? null : w.geoName,
                 warehouse_name: w.warehouseName,
-                box_delivery_base: replaceWithNull(w.boxDeliveryBase) ?? Number(w.boxDeliveryBase.replace(",", ".")),
-                box_delivery_coef_expr: replaceWithNull(w.boxDeliveryCoefExpr) ?? Number(w.boxDeliveryBase.replace(",", ".")),
-                box_delivery_liter: replaceWithNull(w.boxDeliveryLiter) ?? Number(w.boxDeliveryBase.replace(",", ".")),
-                box_delivery_marketplace_base: replaceWithNull(w.boxDeliveryMarketplaceBase) ?? Number(w.boxDeliveryBase.replace(",", ".")),
-                box_delivery_marketplace_coef_expr: replaceWithNull(w.boxDeliveryMarketplaceCoefExpr) ?? Number(w.boxDeliveryBase.replace(",", ".")),
-                box_delivery_marketplace_liter: replaceWithNull(w.boxDeliveryMarketplaceLiter) ?? Number(w.boxDeliveryBase.replace(",", ".")),
-                box_storage_base: replaceWithNull(w.boxStorageBase) ?? Number(w.boxDeliveryBase.replace(",", ".")),
-                box_storage_coef_expr: replaceWithNull(w.boxStorageCoefExpr) ?? Number(w.boxDeliveryBase.replace(",", ".")),
-                box_storage_liter: replaceWithNull(w.boxStorageLiter) ?? Number(w.boxDeliveryBase.replace(",", ".")),
+                box_delivery_base: parseWarehouseCoefs(w.boxDeliveryBase),
+
+                box_delivery_coef_expr: parseWarehouseCoefs(w.boxDeliveryCoefExpr),
+                box_delivery_liter: parseWarehouseCoefs(w.boxDeliveryLiter),
+                box_delivery_marketplace_base: parseWarehouseCoefs(w.boxDeliveryMarketplaceBase),
+                box_delivery_marketplace_coef_expr: parseWarehouseCoefs(w.boxDeliveryMarketplaceCoefExpr),
+                box_delivery_marketplace_liter: parseWarehouseCoefs(w.boxDeliveryMarketplaceLiter),
+                box_storage_base: parseWarehouseCoefs(w.boxStorageBase),
+                box_storage_coef_expr: parseWarehouseCoefs(w.boxStorageCoefExpr),
+                box_storage_liter: parseWarehouseCoefs(w.boxStorageLiter),
             };
         }),
     );

@@ -2,7 +2,7 @@
 import { dtoSchema } from "./dto/wbBoxTariffs.valid.js";
 import { DTO } from "./types.js";
 
-async function getWbTariffs(): Promise<DTO> {
+async function getWbTariffs(): Promise<DTO> | undefined {
     const actualDateFormated = new Date().toISOString().slice(0, 10);
 
     const url = `https://common-api.wildberries.ru/api/v1/tariffs/box?date=${actualDateFormated}`;
@@ -13,7 +13,6 @@ async function getWbTariffs(): Promise<DTO> {
         const response = await fetch(url, {
             headers: {
                 "Authorization": `Bearer ${TOKEN}`,
-                // "Content-Type": "application/json",
             },
         });
         if (!response.ok) {
@@ -25,7 +24,7 @@ async function getWbTariffs(): Promise<DTO> {
         // console.log(data);
         return data;
     } catch (error) {
-        console.error(error.message);
+        console.error((error as Error).message);
     }
 }
 export default getWbTariffs;
