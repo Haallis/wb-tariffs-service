@@ -54,7 +54,6 @@ function isTariffChanged(oldRec: any, newRec: any): boolean {
 
     for (const key of keysToCompare) {
         const oldVal = oldRec[key] === null ? null : Number(oldRec[key]);
-        console.log(oldVal);
 
         const newVal = newRec[key];
 

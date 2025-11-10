@@ -2,3 +2,4 @@ node_modules
 .local
 .env
 dist
+src/services/google-api/google-file.json
