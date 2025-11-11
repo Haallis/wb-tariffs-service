@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { DTO, NormDTO } from "../types.js";
+import { actualLocalDateFormated } from "../wb-client.js";
 
 export const normalizedDTOSchema = z.array(
     z.object({
@@ -26,11 +27,10 @@ function parseWarehouseCoefs(coef) {
 }
 
 export function normalizeDTO(dto: DTO): NormDTO {
-    const date = dto.response.data.dtTillMax;
     return normalizedDTOSchema.parse(
         dto.response.data.warehouseList.map((w) => {
             return {
-                date: date,
+                date: new Date().toLocaleDateString("en-CA").slice(0, 10),
                 geo_name: w.geoName === "" ? null : w.geoName,
                 warehouse_name: w.warehouseName,
                 box_delivery_base: parseWarehouseCoefs(w.boxDeliveryBase),

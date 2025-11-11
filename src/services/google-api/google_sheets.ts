@@ -28,7 +28,6 @@ export async function updateTariffsInSheets() {
     const sheets = await getSheetsClient();
 
     const header = [
-        "id",
         "date",
         "geo_name",
         "warehouse_name",
@@ -46,8 +45,7 @@ export async function updateTariffsInSheets() {
     const tariffs = await knex("tariffs").select("*").whereRaw("date = CURRENT_DATE").orderBy("box_delivery_coef_expr", "asc");
 
     const sheetRows = tariffs.map((t) => [
-        t.id,
-        t.date,
+        new Date(t.date).toLocaleDateString("en-CA"),
         t.geo_name,
         t.warehouse_name,
         t.box_delivery_base,
@@ -69,12 +67,12 @@ export async function updateTariffsInSheets() {
 
             await sheets.spreadsheets.values.clear({
                 spreadsheetId: id,
-                range: "stocks_coefs!A1",
+                range: "stocks_coefs",
             });
 
             await sheets.spreadsheets.values.update({
                 spreadsheetId: id,
-                range: "stocks_coefs!A1",
+                range: "stocks_coefs",
                 valueInputOption: "USER_ENTERED",
                 requestBody: { values: mappedData },
             });

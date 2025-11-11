@@ -5,7 +5,6 @@ import getWbTariffs from "./wb-client.js";
 export async function generateDBRecs(): Promise<void> {
     const dto = await getWbTariffs();
     const newRecs = normalizeDTO(dto);
-    console.log(newRecs[0]);
 
     const date = newRecs[0].date;
     const sameDateOldRecs = await knex("tariffs").where({ date });
