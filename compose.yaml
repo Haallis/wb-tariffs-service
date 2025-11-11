@@ -53,6 +53,8 @@ services:
       dockerfile: Dockerfile
 
     environment:
+      GOOGLE_SERVICE_ACCOUNT_KEY_JSON: ${GOOGLE_SERVICE_ACCOUNT_KEY_JSON}
+      GOOGLE_SHEET_IDS: ${ GOOGLE_SHEET_IDS}
       POSTGRES_HOST: pg
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_DB: ${POSTGRES_DB}

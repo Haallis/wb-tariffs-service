@@ -2,7 +2,7 @@ import { dtoSchema } from "./dto/wbBoxTariffs.valid.js";
 import { DTO } from "./types.js";
 
 async function getWbTariffs(): Promise<DTO> | undefined {
-    const actualLocalDateFormated = new Date().toLocaleDateString("en-CA").slice(0, 10);
+    const actualDateFormated = new Date().toLocaleDateString("en-CA").slice(0, 10);
 
     const url = `https://common-api.wildberries.ru/api/v1/tariffs/box?date=${actualDateFormated}`;
 

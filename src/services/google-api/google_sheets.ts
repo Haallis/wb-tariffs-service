@@ -3,7 +3,7 @@ import { google } from "googleapis";
 import path from "path";
 
 export async function getSheetsClient() {
-    const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY);
+    const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY_JSON);
     const auth = new google.auth.GoogleAuth({
         credentials,
         scopes: ["https://www.googleapis.com/auth/spreadsheets"],
@@ -45,7 +45,7 @@ export async function updateTariffsInSheets() {
     const tariffs = await knex("tariffs").select("*").whereRaw("date = CURRENT_DATE").orderBy("box_delivery_coef_expr", "asc");
 
     const sheetRows = tariffs.map((t) => [
-        new Date(t.date).toLocaleDateString("en-CA"),
+        new Date().toLocaleDateString("en-CA"),
         t.geo_name,
         t.warehouse_name,
         t.box_delivery_base,
