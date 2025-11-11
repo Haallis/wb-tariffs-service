@@ -4,5 +4,5 @@ node_modules
 .sql
 .idea
 dist
-/src/services/google-api/google-file.json
-google-file.json
+./src/services/google-api/google_service.json
+google_service.json

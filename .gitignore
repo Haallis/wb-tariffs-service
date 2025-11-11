@@ -2,4 +2,5 @@ node_modules
 .local
 .env
 dist
-src/services/google-api/google-file.json
+./src/services/google-api/google_service.json
+google_service.json

@@ -18,7 +18,7 @@ export const normalizedDTOSchema = z.array(
     }),
 );
 
-function parseWarehouseCoefs(coef) {
+function parseWarehouseCoefs(coef: string) {
     if (coef === "" || coef === "-") {
         return null;
     }

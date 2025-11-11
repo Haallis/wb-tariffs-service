@@ -47,14 +47,15 @@ services:
 
   app:
     container_name: app_wb
-
+    volumes:
+      - ./src/services/google-api/google_service.json:/app/src/services/google-api/google_service.json:ro
     build:
       context: .
       dockerfile: Dockerfile
 
     environment:
-      GOOGLE_SERVICE_ACCOUNT_KEY_JSON: ${GOOGLE_SERVICE_ACCOUNT_KEY_JSON}
-      GOOGLE_SHEET_IDS: ${ GOOGLE_SHEET_IDS}
+      GOOGLE_SERVICE_ACCOUNT_FILE_PATH: ${GOOGLE_SERVICE_ACCOUNT_FILE_PATH}
+      GOOGLE_SHEET_IDS: ${GOOGLE_SHEET_IDS}
       POSTGRES_HOST: pg
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_DB: ${POSTGRES_DB}
