@@ -63,7 +63,7 @@ PS: С наилучшими пожеланиями!
 
 
 
-# Чтобы обеспечить работу автоматизированного сервиса записи/обновления тарифов WB с последующей записью в PostgreSQL и google sheets локально и через Docker, выполните слудющие действия:
+Чтобы обеспечить работу автоматизированного сервиса записи/обновления тарифов WB с последующей записью в PostgreSQL и Google sheets локально и через Docker, выполните следющие действия:
 
 1. Создайте .env в корне проекта (рядом с docker-compose.yml) на основе примера .env.example:
 
@@ -71,7 +71,7 @@ PS: С наилучшими пожеланиями!
 
 2. Для работы с API google sheets выполните нижеуказанные действия:
   - создайте проект прейдя по ссылке https://console.cloud.google.com/projectcreate;
-  - в разделе APIs & Services → Library включите: Google Sheets API
+  - в разделе APIs & Services → Library включите: Google Sheets API;
   - создайте сервисный аккаунт:
      - перейдите в IAM & Admin → Service Accounts;
      - нажмите Create Service Account;
@@ -79,8 +79,31 @@ PS: С наилучшими пожеланиями!
      - после создания — выбери аккаунт → Keys → Add Key → Create new key → JSON;
      - сохраните JSON-файл, переименуйте его в google_service.json и положите его по  следующему пути ./src/services/google-api/google_service.json.
 
+3. Настройте доступ к Google-таблице/-цам
+- Создайте новую Google-таблицу вручную
+- Назовите вкладку stocks_coefs
+- Скопируйте её ID (часть URL между /d/ и /edit), 
+например:
+https://docs.google.com/spreadsheets/d/`1AbCdEfGhIjKlMnOpQrStUvWxYz`/edit#gid=0
+        ↑ вот это ID
 
-3. Запустите команду  
+- Добавьте этот ID в .env:
+
+`GOOGLE_SHEET_IDS=1AbCdEfGhIjKlMnOpQrStUvWxYz`
+
+- Откройте раздел в таблице "Настройки доступа"
+- Добавьте email сервисного аккаунта (из поля client_email в google_service.json)
+- Выдайте ему права Редактор.
+    или 
+  Сделайте досутпным для редактуры всем, у кого есть ссылка
+
+
+
+4. Локальный запуск 
+```bash
+  npm run dev
+```
+   Запуск в Docker 
 ```bash
   docker compose up 
 ```
