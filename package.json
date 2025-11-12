@@ -1,7 +1,7 @@
 {
     "name": "btlz-test",
     "version": "1.0.0",
-    "description": "your description",
+    "description": "WB tariffs task",
     "main": "app.js",
     "type": "module",
     "scripts": {
