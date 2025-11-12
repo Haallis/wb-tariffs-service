@@ -4,7 +4,7 @@ import { CronJob } from "cron";
 
 export function applyCron() {
     new CronJob(
-        "*/15 * * * * *",
+        "0 * * * *",
         async () => {
             console.log("НОВЫЙ ЗАПРОС");
             await migrate.latest();
